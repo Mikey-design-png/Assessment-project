@@ -2,7 +2,7 @@ beginner_questions = [
     {
         "question": "What is the capital of France?",
         "options": ["A) Berlin", "B) Madrid", "C) Paris", "D) Rome"],
-        "answer": "C"
+        "answer": "dmm"
     },
     {
         "question": "Which planet is known as the Red Planet?",
