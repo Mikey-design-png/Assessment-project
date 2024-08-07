@@ -1,37 +1,76 @@
 from question import *
 import random
+def display_options(menu_option: dict) -> str:
+    print("\nchoose an item:")
+    for menu_choice, menu_content in menu_option.items():
+        print(f"-{menu_choice} {menu_content}")
+    choice: str = input("Enter your choice: ").upper()
+    return choice
 
+
+def ask_question(questions: dict, difficulty: str) -> bool:
+    question = random.choice(questions[difficulty])
+    print(question["question"])
+    for options in question["options"]:
+        print(options)
+    correct_answer = question["answer"]
+    answer = input("what is your answer:")
+    return answer == correct_answer
+
+
+def difficulty_selection(questions: dict):
+    score = 0
+    while True:
+        difficulty_choice = display_options(menu_option_difficulty)
+        if difficulty_choice in menu_option_difficulty:
+            level = menu_option_difficulty[difficulty_choice]
+            print("123")
+            while True:
+                correct = ask_question(questions, level)
+                if correct:
+                    score += SCORE_INCREMENT
+
+
+
+
+
+
+
+
+
+
+        else:
+            print("Invalid selection, try again")
+
+SCORE_INCREMENT = 2
+
+questions: dict = {
+    "Beginner level": beginner_questions,
+    "Medium level": medium_level_questions,
+    "Hard level": hard_level_questions,
+    "Mixed level": mixed_level_questions
+}
+
+menu_option: dict[str:str] = {
+    "(1)": "Difficulty selection",
+    "(2)": "View history",
+    "(3)": "Quit the game"
+}
+
+menu_option_difficulty: dict[str:str] = {
+    "1": "Beginner level",
+    "2": "Medium level",
+    "3": "Hard level",
+    "4": "Mixed level"
+}
 
 running = True
-def get_choice() -> str:
-    while running:
-        print("\nChoose an item")
-        menu_option: dict[str:str] = {
-            "1":"Difficulty selection",
-            "2":"View history",
-            "3": "Quit the game"
-        }
-        while True:
-            try:
-                for menu_choice, menu_content in menu_option.items():
-                    print(f"-{menu_choice} {menu_content}")
-                choice = input("Enter your choice(Press the enter to cancel):").upper()
-                if not choice:
-                    print("cancel!")
-                    break
-                if choice not in menu_option:
-                    print("Choice is not in options!")
-                else:
-                    return choice
-            except ValueError:
-                print("Invalid input")
-        break
+while running:
+    option_choice = display_options(menu_option)
+    if option_choice == "1":
+        difficulty_selection(questions)
+    else:
+        print("\n Invalid selection. Please try again.")
 
-choice = get_choice()
 
-def difficulty_selection():
-    print("1: Beginner level")
-    print("2: medium level")
-    print("3: Hard level")
-    print("4: Mixed level ")
-    print("")
+
