@@ -3,32 +3,36 @@ import random
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
     for menu_choice, menu_content in menu_option.items():
-        print(f"-{menu_choice} {menu_content}")
+        print(f"-({menu_choice}) {menu_content}")
     choice: str = input("Enter your choice: ").upper()
     return choice
 
 
-def ask_question(questions: dict, difficulty: str) -> bool:
+def ask_question(questions: dict, difficulty: str, number: int) -> bool:
     question = random.choice(questions[difficulty])
-    print(question["question"])
+    question_display = question["question"]
+    print(f"\n{number}:{question_display}")
     for options in question["options"]:
         print(options)
     correct_answer = question["answer"]
-    answer = input("what is your answer:")
+    answer = input("what is your answer:").upper()
+    print(f"correct answer is {correct_answer} ")
     return answer == correct_answer
 
 
 def difficulty_selection(questions: dict):
     score = 0
+    question_number = 1
     while True:
         difficulty_choice = display_options(menu_option_difficulty)
         if difficulty_choice in menu_option_difficulty:
             level = menu_option_difficulty[difficulty_choice]
-            print("123")
             while True:
-                correct = ask_question(questions, level)
+                correct = ask_question(questions, level, question_number)
+                question_number += 1
                 if correct:
                     score += SCORE_INCREMENT
+                    print(f"Correct! Your score is now {score} points.")
 
 
 
@@ -52,9 +56,9 @@ questions: dict = {
 }
 
 menu_option: dict[str:str] = {
-    "(1)": "Difficulty selection",
-    "(2)": "View history",
-    "(3)": "Quit the game"
+    "1": "Difficulty selection",
+    "2": "View history",
+    "3": "Quit the game"
 }
 
 menu_option_difficulty: dict[str:str] = {
