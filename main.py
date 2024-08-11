@@ -33,11 +33,17 @@ def difficulty_selection(questions: dict):
         if difficulty_choice in menu_option_difficulty:
             level = menu_option_difficulty[difficulty_choice]
             while True:
-                correct = ask_question(questions, level, question_number)
-                question_number += 1
-                if correct:
-                    score += SCORE_INCREMENT
-                    print(f"Correct! Your score is now {score} points.")
+                if score >= 0:
+                    correct = ask_question(questions, level, question_number)
+                    question_number += 1
+                    if correct:
+                        if difficulty_choice == "Beginner level":
+                            scoring_system(score, SCORE_INCREMENT_BEGINNER)
+                        
+
+
+
+                        print(f"Correct! Your score is now {score} points.")
 
 
 
@@ -51,7 +57,7 @@ def difficulty_selection(questions: dict):
         else:
             print("Invalid selection, try again")
 
-SCORE_INCREMENT = 2
+SCORE_INCREMENT_BEGINNER = 4
 
 questions: dict = {
     "Beginner level": beginner_questions,
