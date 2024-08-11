@@ -1,5 +1,10 @@
 from question import *
 import random
+
+def scoring_system(score_have: int, score_gain: int):
+    score_have += score_gain
+    print(f"Correct! Your score is now {score} points.")
+
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
     for menu_choice, menu_content in menu_option.items():
