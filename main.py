@@ -3,7 +3,7 @@ import random
 
 def scoring_system(score_have: int, score_gain: int):
     score_have += score_gain
-    print(f"Correct! Your score is now {score} points.")
+    print(f"Correct! Your score is now {score_have} points.")
 
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
