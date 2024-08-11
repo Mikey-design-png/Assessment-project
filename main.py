@@ -39,6 +39,9 @@ def difficulty_selection(questions: dict):
                     if correct:
                         if difficulty_choice == "Beginner level":
                             scoring_system(score, SCORE_INCREMENT_BEGINNER)
+                        elif difficulty_choice ==  "Medium level" and "Mixed level":
+                            scoring_system(score, SCORE_INCREMENT_Medium_MIXED)
+                            
                         
 
 
@@ -58,7 +61,7 @@ def difficulty_selection(questions: dict):
             print("Invalid selection, try again")
 
 SCORE_INCREMENT_BEGINNER = 4
-
+SCORE_INCREMENT_Medium_MIXED = 4
 questions: dict = {
     "Beginner level": beginner_questions,
     "Medium level": medium_level_questions,
