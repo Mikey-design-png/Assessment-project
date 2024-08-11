@@ -1,9 +1,6 @@
 from question import *
 import random
 
-def scoring_system(score_have: int, score_gain: int):
-    score_have += score_gain
-    print(f"Correct! Your score is now {score_have} points.")
 
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
@@ -20,8 +17,8 @@ def ask_question(questions: dict, difficulty: str, number: int) -> bool:
     for options in question["options"]:
         print(options)
     correct_answer = question["answer"]
-    answer = input("what is your answer:").upper()
     print(f"correct answer is {correct_answer} ")
+    answer = input("what is your answer:").upper()
     return answer == correct_answer
 
 
@@ -37,18 +34,14 @@ def difficulty_selection(questions: dict):
                     correct = ask_question(questions, level, question_number)
                     question_number += 1
                     if correct:
-                        if difficulty_choice == "Beginner level":
-                            scoring_system(score, SCORE_INCREMENT_BEGINNER)
-                        elif difficulty_choice ==  "Medium level" and "Mixed level":
-                            scoring_system(score, SCORE_INCREMENT_Medium_MIXED)
-                        elif difficulty_choice == "Hard level":
-                            scoring_system(score, SCORE_INCREMENT_HARD )
-
-                        
-
-
-
+                        if level == "Beginner level":
+                            score += SCORE_INCREMENT_BEGINNER
+                        elif level == "Medium level" or "Mixed level":
+                            score += SCORE_INCREMENT_Medium_MIXED
+                        elif level == "Hard level":
+                            score += SCORE_INCREMENT_HARD
                         print(f"Correct! Your score is now {score} points.")
+
 
 
 
@@ -61,6 +54,7 @@ def difficulty_selection(questions: dict):
 
         else:
             print("Invalid selection, try again")
+
 
 SCORE_INCREMENT_BEGINNER = 4
 SCORE_INCREMENT_Medium_MIXED = 3
