@@ -43,12 +43,14 @@ def difficulty_selection(questions: dict):
                         print(f"Correct! Your score is now {score} points at the {level}.")
                     if not correct:
                         if level == "Beginner level":
-                            score += SCORE_INCREMENT_BEGINNER
+                            score += SCORE_DEDUCTION_BEGINNER
                         elif level == "Medium level" or level == "Mixed level":
-                            score += SCORE_INCREMENT_Medium_MIXED
+                            score += SCORE_DEDUCTION_Medium_MIXED
                         elif level == "Hard level":
-                            score += SCORE_INCREMENT_HARD
-                        print(f"Correct! Your score is now {score} points at the {level}.")
+                            score += SCORE_DEDUCTION_HARD
+                        print(f"INcorrect! Your score is now {score} points at the {level}.(The score is less than 0 will game over)")
+
+                    
 
 
 
@@ -67,6 +69,10 @@ def difficulty_selection(questions: dict):
 SCORE_INCREMENT_BEGINNER = 4
 SCORE_INCREMENT_Medium_MIXED = 3
 SCORE_INCREMENT_HARD = 2
+
+SCORE_DEDUCTION_BEGINNER = 2
+SCORE_DEDUCTION_Medium_MIXED = 3
+SCORE_DEDUCTION_HARD = 4
 questions: dict = {
     "Beginner level": beginner_questions,
     "Medium level": medium_level_questions,
