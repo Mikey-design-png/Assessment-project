@@ -50,7 +50,7 @@ def difficulty_selection(questions: dict):
                             score -= SCORE_DEDUCTION_HARD
                         print(
                             f"INcorrect! Your score is now {score} points at the {level}.(The score is less than 0 will game over)")
-                else:
+                elif score < 0:
                     print(f"Game over your score is {score}")
                     return
 
