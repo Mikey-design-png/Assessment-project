@@ -4,16 +4,20 @@ import random
 def life_system(life:int, level: str):
     life_deduction = 1
     life -= life_deduction
-    print(f"You have lost one life, {life} left")
+    print(f"⚠️ You have lost one life! Remaining lives: {life}")
     return life
 def scoring_system(answer_correct:bool, level:str, score:int):
     if answer_correct:
         score += SCORE_RULES[level]["increment"]
-        print(f"Correct! Your score is now {score} points at the {level}.")
+        print(f"Correct!You have gained {SCORE_RULES[level]['increment']} points.")
     else:
         score -= SCORE_RULES[level]["deduction"]
-        if 
-        print(f"Incorrect! Your score is now {score} points at the {level}.")
+        if score < 0:
+            score = 0
+            point_lost = SCORE_RULES[level][ "deduction"]
+            print(f"Incorrect!You have lost{point_lost}")
+        print(f"Your current score: {score} points at {level})")
+    return score
 
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
@@ -44,15 +48,16 @@ def difficulty_selection():
         if difficulty_choice in menu_option_difficulty:
             level = menu_option_difficulty[difficulty_choice]
             player_life = SCORE_RULES[level]["life_number"]
+            print(f"\nYour selected {level}, you start with {player_life} lives ")
             while True:
                 if player_life > 0:
                     correct,question_number = ask_question(level, question_number)
                     score = scoring_system(correct, level, score)
                     if score == 0:
-                        print(f"You don't have enough score!{score}")
-                        print("Now you will lose one life if you answer incorrectly")
+                        print(f"\nWarning: Your score is {score}.")
+                        print("You are gonna lose one life instead of points")
                         player_life = life_system(player_life, level)
-                        print("(If the life is less 0, Game will be over)")
+                        print("Be careful! If your lives reach 0, the game is over")
                 else:
                     print(f"You don't have enough life {player_life}, Gamve over!")
                     return
