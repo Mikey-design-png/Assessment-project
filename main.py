@@ -25,9 +25,9 @@ def scoring_system(answer_correct:bool, level:str, score:int):
         score -= SCORE_RULES[level]["deduction"]
         if score < 0:
             score = 0
-            point_lost = SCORE_RULES[level][ "deduction"]
-            print(f"Incorrect!You have lost{point_lost}")
-        print(f"Your current score: {score} points at {level})")
+        point_lost = SCORE_RULES[level][ "deduction"]
+        print(f"Incorrect!You have lost{point_lost}")
+    print(f"Your current score: {score} points at {level})")
     return score
 
 def display_options(menu_option: dict) -> str:
@@ -65,14 +65,14 @@ def difficulty_selection():
                     correct,question_number = ask_question(level, question_number)
                     score = scoring_system(correct, level, score)
                     if correct:
-                        wager_option = input("Do you wanna wager your socre? (Y/N)").upper
+                        wager_option = input("Do you wanna wager your socre? (Y/N)").upper()
                         if wager_option == "Y":
                             wager_amount = wager_system(score)
-                            correct = ask_question(level, question_number)
+                            correct,question_number = ask_question(level, question_number)
                             if correct:
                                 score += wager_amount
                                 print(f"Congratulation!You have gained your wager points,the current score is {score}")
-                            else:
+                            elif not correct:
                                 score -= wager_amount
                                 print(f"Unlucky!You lost your wagered points. Your new score is {score} points.") 
                         else:
