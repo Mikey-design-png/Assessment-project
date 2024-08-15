@@ -72,9 +72,11 @@ def difficulty_selection():
                             if correct:
                                 score += wager_amount
                                 print(f"Congratulation!You have gained your wager points,the current score is {score}")
-
-
-                        
+                            else:
+                                score -= wager_amount
+                                print(f"Unlucky!You lost your wagered points. Your new score is {score} points.") 
+                        else:
+                            print("Wager cancelled")                  
                     if score == 0:
                         print(f"\nWarning: Your score is {score}.")
                         print("You are gonna lose one life instead of points")
