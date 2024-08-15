@@ -4,10 +4,10 @@ import random
 def life_system(life:int, level: str):
     life_deduction = 1
     life -= life_deduction
-    print(f"You have lost one life, {life} left")\
+    print(f"You have lost one life, {life} left")
     return life
 def scoring_system(answer_correct:bool, level:str, score:int):
-    if correct:
+    if answer_correct:
         score += SCORE_RULES[level]["increment"]
         print(f"Correct! Your score is now {score} points at the {level}.")
     else:
@@ -50,6 +50,11 @@ def difficulty_selection():
                 elif score < 0:
                     print(f"You don't have enough score!{score}")
                     print("You will lose one life if you answer incorrectly")
+                    if player_life > 0:
+                        player_life = life_system(player_life, level)
+                    else:
+                        print(f"You don't have enough life {player_life}, Gamve over!")
+                        return
                     
         else:
             print("Invalid selection, try again")
