@@ -50,11 +50,7 @@ def difficulty_selection():
                 elif score < 0:
                     print(f"You don't have enough score!{score}")
                     print("You will lose one life if you answer incorrectly")
-                    if player_life > 0:
-                        player_life = life_system(player_life, level)
-                    else:
-                        print(f"You don't have enough life {player_life}, Gamve over!")
-                        return
+                    
                     
         else:
             print("Invalid selection, try again")
