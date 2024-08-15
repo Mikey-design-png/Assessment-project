@@ -85,6 +85,9 @@ def difficulty_selection():
                 else:
                     print(f"You don't have enough life {player_life}, Gamve over!")
                     return
+        if question_number == 20:
+            print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
+            return
                     
                     
         else:
