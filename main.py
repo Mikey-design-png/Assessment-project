@@ -49,7 +49,8 @@ def difficulty_selection():
                     score = scoring_system(correct, level, score)
                 elif score < 0:
                     print(f"You don't have enough score!{score}")
-                    print("You will lose one life if you answer incorrectly")
+                    print("Now you will lose one life if you answer incorrectly")
+                    print("(If the life is less 0, Game will be over)")
                     if player_life > 0:
                         player_life = life_system(player_life, level)
                     else:
