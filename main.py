@@ -1,5 +1,9 @@
 from question import *
 import random
+
+def view_history():
+    pass
+
 def wager_system(score: int) -> int:
     while True:
         try:
@@ -59,6 +63,9 @@ def difficulty_selection():
         if difficulty_choice in menu_option_difficulty:
             level = menu_option_difficulty[difficulty_choice]
             player_life = SCORE_RULES[level]["life_number"]
+            user_name = input(f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS})")
+            while len(user_name) < MINIMUM_CHARACTERS or len(user_name) > MAXIMUM_CHARACTERS:
+                user_name = input(f"Input your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length")
             print(f"\nYour selected {level}, you start with {player_life} lives ")
             while True:
                 if player_life > 0:
@@ -84,10 +91,10 @@ def difficulty_selection():
                         print("Be careful! If your lives reach 0, the game is over")
                 else:
                     print(f"You don't have enough life {player_life}, Gamve over!")
-                    return
+                    return user_name, score
         if question_number == 20:
             print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
-            return
+            return user_name, score
                     
                     
         else:
@@ -115,14 +122,17 @@ SCORE_RULES = {
     "Beginner level": {"increment": 4, "deduction": 2, "life_number": 4},
     "Medium level": {"increment": 3, "deduction": 3, "life_number": 3},
     "Mixed level": {"increment": 3, "deduction": 3, "life_number": 3},
-    "Hard level": {"increment": 2, "deduction": 4,"life_number": 2},
+    "Hard level": {"increment": 2, "deduction": 4,"life_number": 2}
 }
-
+MAXIMUM_CHARACTERS = 8
+MINIMUM_CHARACTERS = 1
 running = True
 while running:
     option_choice = display_options(menu_option)
     if option_choice == "1":
-        difficulty_selection()
+        user_name, final_score = difficulty_selection()
+    if option_choice == "2":
+        pass
     else:
         print("\n Invalid selection. Please try again.")
 
