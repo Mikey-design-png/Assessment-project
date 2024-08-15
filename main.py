@@ -1,5 +1,16 @@
 from question import *
 import random
+def wager_system(score: int) -> int:
+    while True:
+        try:
+            wager_amount = int(input(f"\nHow many points you wanna wager Max:{score}"))
+            if wager_amount <= 0 or wager_amount > score:
+                print(f"Invalid wager. Enter a value between 1 and {score}.")
+            else:
+                return wager_amount
+        except ValueError:
+            print(f"Invalid input. Please enter a valid number.")
+
 
 def life_system(life:int, level: str):
     life_deduction = 1
@@ -53,6 +64,17 @@ def difficulty_selection():
                 if player_life > 0:
                     correct,question_number = ask_question(level, question_number)
                     score = scoring_system(correct, level, score)
+                    if correct:
+                        wager_option = input("Do you wanna wager your socre? (Y/N)").upper
+                        if wager_option == "Y":
+                            wager_amount = wager_system(score)
+                            correct = ask_question(level, question_number)
+                            if correct:
+                                score += wager_amount
+                                print(f"Congratulation!You have gained your wager points,the current score is {score}")
+
+
+                        
                     if score == 0:
                         print(f"\nWarning: Your score is {score}.")
                         print("You are gonna lose one life instead of points")
