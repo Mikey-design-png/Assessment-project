@@ -41,7 +41,7 @@ def difficulty_selection():
         difficulty_choice = display_options(menu_option_difficulty)
         if difficulty_choice in menu_option_difficulty:
             level = menu_option_difficulty[difficulty_choice]
-            player_life = SCORE_RULES[level]["life"]
+            player_life = SCORE_RULES[level]["life_number"]
             while True:
                 if score >= 0:
                     correct = ask_question(questions, level, question_number)
@@ -90,7 +90,7 @@ running = True
 while running:
     option_choice = display_options(menu_option)
     if option_choice == "1":
-        difficulty_selection(questions)
+        difficulty_selection()
     else:
         print("\n Invalid selection. Please try again.")
 
