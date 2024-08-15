@@ -12,6 +12,7 @@ def scoring_system(answer_correct:bool, level:str, score:int):
         print(f"Correct! Your score is now {score} points at the {level}.")
     else:
         score -= SCORE_RULES[level]["deduction"]
+        if 
         print(f"Incorrect! Your score is now {score} points at the {level}.")
 
 def display_options(menu_option: dict) -> str:
@@ -22,7 +23,7 @@ def display_options(menu_option: dict) -> str:
     return choice
 
 
-def ask_question(difficulty: str, number: int) -> bool:
+def ask_question(difficulty: str, number: int) -> bool and int:
     question = random.choice(questions[difficulty])
     question_display = question["question"]
     print(f"\n{number}:{question_display}")
@@ -31,7 +32,8 @@ def ask_question(difficulty: str, number: int) -> bool:
     correct_answer = question["answer"]
     print(f"correct answer is {correct_answer} ")
     answer = input("what is your answer:").upper()
-    return answer == correct_answer
+    number += 1
+    return answer == correct_answer, number
 
 
 def difficulty_selection():
@@ -43,19 +45,17 @@ def difficulty_selection():
             level = menu_option_difficulty[difficulty_choice]
             player_life = SCORE_RULES[level]["life_number"]
             while True:
-                if score >= 0:
-                    correct = ask_question(questions, level, question_number)
-                    question_number += 1
+                if player_life > 0:
+                    correct,question_number = ask_question(level, question_number)
                     score = scoring_system(correct, level, score)
-                elif score < 0:
-                    print(f"You don't have enough score!{score}")
-                    print("Now you will lose one life if you answer incorrectly")
-                    print("(If the life is less 0, Game will be over)")
-                    if player_life > 0:
+                    if score == 0:
+                        print(f"You don't have enough score!{score}")
+                        print("Now you will lose one life if you answer incorrectly")
                         player_life = life_system(player_life, level)
-                    else:
-                        print(f"You don't have enough life {player_life}, Gamve over!")
-                        return
+                        print("(If the life is less 0, Game will be over)")
+                else:
+                    print(f"You don't have enough life {player_life}, Gamve over!")
+                    return
                     
                     
         else:
