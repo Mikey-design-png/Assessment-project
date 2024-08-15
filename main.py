@@ -1,6 +1,18 @@
 from question import *
 import random
 
+def life_system(life:int, level: str):
+    life_deduction = 1
+    life -= life_deduction
+    print(f"You have lost one life, {life} left")\
+    return life
+def scoring_system(answer_correct:bool, level:str, score:int):
+    if correct:
+        score += SCORE_RULES[level]["increment"]
+        print(f"Correct! Your score is now {score} points at the {level}.")
+    else:
+        score -= SCORE_RULES[level]["deduction"]
+        print(f"Incorrect! Your score is now {score} points at the {level}.")
 
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
@@ -10,7 +22,7 @@ def display_options(menu_option: dict) -> str:
     return choice
 
 
-def ask_question(questions: dict, difficulty: str, number: int) -> bool:
+def ask_question(difficulty: str, number: int) -> bool:
     question = random.choice(questions[difficulty])
     question_display = question["question"]
     print(f"\n{number}:{question_display}")
@@ -22,62 +34,25 @@ def ask_question(questions: dict, difficulty: str, number: int) -> bool:
     return answer == correct_answer
 
 
-def difficulty_selection(questions: dict):
+def difficulty_selection():
     score = 0
     question_number = 1
     while True:
         difficulty_choice = display_options(menu_option_difficulty)
         if difficulty_choice in menu_option_difficulty:
             level = menu_option_difficulty[difficulty_choice]
+            player_life = SCORE_RULES[level]["life"]
             while True:
                 if score >= 0:
                     correct = ask_question(questions, level, question_number)
                     question_number += 1
-                    if correct:
-                        if level == "Beginner level":
-                            score += SCORE_INCREMENT_BEGINNER
-                        elif level == "Medium level" or level == "Mixed level":
-                            score += SCORE_INCREMENT_Medium_MIXED
-                        elif level == "Hard level":
-                            score += SCORE_INCREMENT_HARD
-                        print(f"Correct! Your score is now {score} points at the {level}.")
-                    else:
-                        if level == "Beginner level":
-                            score -= SCORE_DEDUCTION_BEGINNER
-                        elif level == "Medium level" or level == "Mixed level":
-                            score -= SCORE_DEDUCTION_Medium_MIXED
-                        elif level == "Hard level":
-                            score -= SCORE_DEDUCTION_HARD
-                        print(
-                            f"INcorrect! Your score is now {score} points at the {level}.(The score is less than 0 will game over)")
+                    score = scoring_system(correct, level, score)
                 elif score < 0:
-                    print(f"Game over your score is {score}")
-                    return
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    print(f"You don't have enough score!{score}")
+                    print("You will lose one life if you answer incorrectly")
+                    
         else:
             print("Invalid selection, try again")
-
-
-SCORE_INCREMENT_BEGINNER = 4
-SCORE_INCREMENT_Medium_MIXED = 3
-SCORE_INCREMENT_HARD = 2
-
-SCORE_DEDUCTION_BEGINNER = 2
-SCORE_DEDUCTION_Medium_MIXED = 3
-SCORE_DEDUCTION_HARD = 4
 questions: dict = {
     "Beginner level": beginner_questions,
     "Medium level": medium_level_questions,
@@ -96,6 +71,12 @@ menu_option_difficulty: dict[str:str] = {
     "2": "Medium level",
     "3": "Hard level",
     "4": "Mixed level"
+}
+SCORE_RULES = {
+    "Beginner level": {"increment": 4, "deduction": 2, "life_number": 4},
+    "Medium level": {"increment": 3, "deduction": 3, "life_number": 3},
+    "Mixed level": {"increment": 3, "deduction": 3, "life_number": 3},
+    "Hard level": {"increment": 2, "deduction": 4,"life_number": 2},
 }
 
 running = True
