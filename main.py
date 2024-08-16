@@ -2,12 +2,16 @@ from question import *
 import random
 
 def view_history():
-    pass
+    user_information[user_place][user_name] = score_final
+    for place, name in user_information:
+        print(f"{place}----{name}----final score: {user_information[place][name]}")
+
+    
 
 def wager_system(score: int) -> int:
     while True:
         try:
-            wager_amount = int(input(f"\nHow many points you wanna wager Max:{score}"))
+            wager_amount = int(input(f"\nHow many points you wanna wager Max:{score} :"))
             if wager_amount <= 0 or wager_amount > score:
                 print(f"Invalid wager. Enter a value between 1 and {score}.")
             else:
@@ -16,7 +20,7 @@ def wager_system(score: int) -> int:
             print(f"Invalid input. Please enter a valid number.")
 
 
-def life_system(life:int, level: str):
+def life_system(life:int):
     life_deduction = 1
     life -= life_deduction
     print(f"⚠️ You have lost one life! Remaining lives: {life}")
@@ -87,14 +91,17 @@ def difficulty_selection():
                     if score == 0:
                         print(f"\nWarning: Your score is {score}.")
                         print("You are gonna lose one life instead of points")
-                        player_life = life_system(player_life, level)
+                        player_life = life_system(player_life)
                         print("Be careful! If your lives reach 0, the game is over")
+                
                 else:
                     print(f"You don't have enough life {player_life}, Gamve over!")
-                    return user_name, score
+                    user_information[user_name] = score
+                    return
         if question_number == 20:
             print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
-            return user_name, score
+            user_information[user_name] = score
+            return 
                     
                     
         else:
@@ -124,17 +131,21 @@ SCORE_RULES = {
     "Mixed level": {"increment": 3, "deduction": 3, "life_number": 3},
     "Hard level": {"increment": 2, "deduction": 4,"life_number": 2}
 }
+user_information = {}
 MAXIMUM_CHARACTERS = 8
 MINIMUM_CHARACTERS = 1
 running = True
 while running:
     option_choice = display_options(menu_option)
     if option_choice == "1":
-        user_name, final_score = difficulty_selection()
+        user_place = 1
+        difficulty_selection()
     if option_choice == "2":
-        pass
+        view_history()
     else:
         print("\n Invalid selection. Please try again.")
+
+
 
 
 
