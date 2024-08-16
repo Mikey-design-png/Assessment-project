@@ -3,24 +3,28 @@ import random
 
 
 
-def msyerious_reward(user_score:int):
-    if user_score>= 20:
-        thumb =  [
-            "          __  ",
-            "         /  | ",
-            "        /   | ",
-            "   ____/    | ",
-            "  /         | ",
-            " /          | ",
-            "|           | ",
-            "|           | ",
-            "|           | ",
-            "|___________| "
-        ]
-        for line in thumb:
-            print(line)
+def msyerious_reward(user_name: str):
+    if not user_name:
+        print("You have not done any games yet")
     else:
-        print("Sorry!You don't have enough score for this reward!")
+        user_score = user_information[user_name]
+        if user_score>= 20:
+            thumb =  [
+                "          __  ",
+                "         /  | ",
+                "        /   | ",
+                "   ____/    | ",
+                "  /         | ",
+                " /          | ",
+                "|           | ",
+                "|           | ",
+                "|           | ",
+                "|___________| "
+            ]
+            for line in thumb:
+                print(line)
+        else:
+            print("Sorry!You don't have enough score for this reward!")
 
 
 def view_history():
@@ -101,7 +105,7 @@ def difficulty_selection() :
                 f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS})")
             while len(user_name) < MINIMUM_CHARACTERS or len(user_name) > MAXIMUM_CHARACTERS:
                 user_name = input(f"Input your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length")
-            print(f"\nHello{user_name}!Your selected {level}, you start with {player_life} lives ")
+            print(f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives ")
             while True:
                 if player_life > 0:
                     correct, question_number = ask_question(level, question_number)
@@ -126,15 +130,13 @@ def difficulty_selection() :
                         print("Be careful! If your lives reach 0, the game is over")
 
                 else:
-                    print(f"You don't have enough life {player_life}, Gamve over!")
+                    print(f"You don't have enough life {player_life}, Game over!")
                     user_information[user_name] = score
-                    return
+                    return user_name
                 if question_number == 20:
                     user_information[user_name] = score
                     print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
-                    return
-
-
+                    return user_name
         else:
             print("Invalid selection, try again")
 
@@ -173,14 +175,13 @@ running = True
 while running:
     option_choice = display_options(menu_option)
     if option_choice == "1":
-        difficulty_selection()
+        user_name = difficulty_selection()
     if option_choice == "2":
         view_history()
     if option_choice =="3":
-        mysterious_reward()
-        pass
+        mysterious_reward(user_name)
     else:
-        print("\n Invalid selection. Please try again.")
+        print("\nInvalid selection. Please try again.")
 
 
 
