@@ -3,7 +3,7 @@ import random
 
 
 
-def msyerious_reward(user_name: str):
+def mysterious_reward(user_name: str):
     if not user_name:
         print("You have not done any games yet")
     else:
