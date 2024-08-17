@@ -73,7 +73,7 @@ def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
     for menu_choice, menu_content in menu_option.items():
         print(f"-({menu_choice}) {menu_content}")
-    choice: str = input("Enter your choice: ").upper()
+    choice: str = input("Enter your choice: ").upper().strip()
     return choice
 
 
@@ -87,7 +87,7 @@ def ask_question(difficulty: str, number: int) -> bool and int:
         print(options)
     correct_answer = question["answer"]
     print(f"correct answer is {correct_answer} ")
-    answer = input("what is your answer:").upper()
+    answer = input("what is your answer:").upper().strip()
     number += 1
     question_list.append(question)
     return answer == correct_answer, number
@@ -102,7 +102,7 @@ def difficulty_selection() :
             level = menu_option_difficulty[difficulty_choice]
             player_life = SCORE_RULES[level]["life_number"]
             user_name = input(
-                f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS})")
+                f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS})").strip()
             while len(user_name) < MINIMUM_CHARACTERS or len(user_name) > MAXIMUM_CHARACTERS:
                 user_name = input(f"Input your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length")
             print(f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives ")
@@ -133,7 +133,7 @@ def difficulty_selection() :
                     print(f"You don't have enough life {player_life}, Game over!")
                     user_information[user_name] = score
                     return user_name
-                if question_number == 20:
+                if question_number >= 5:
                     user_information[user_name] = score
                     print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
                     return user_name
@@ -172,6 +172,7 @@ user_information = {}
 MAXIMUM_CHARACTERS = 8
 MINIMUM_CHARACTERS = 1
 running = True
+user_name = None
 while running:
     option_choice = display_options(menu_option)
     if option_choice == "1":
