@@ -90,8 +90,8 @@ def display_options(menu_option: dict) -> str:
     for menu_choice, menu_content in menu_option.items():
         options_list.append(menu_choice)
         if menu_content in SCORE_RULES:
-            level_description = SCORE_RULES[menu_content]["description"]
-            print(f"-({menu_choice}){menu_content}-----{level_description}")
+            level_desription = SCORE_RULES[menu_content]["description"]
+            print(f"-({menu_choice}){menu_content}-----{level_desription}")
         else:
             print(f"-({menu_choice}) {menu_content}")
     minimum_valid_range = options_list[0]
@@ -115,6 +115,8 @@ def ask_question(difficulty: str, number: int) -> bool and int:
     correct_answer = question["answer"]
     print(f"correct answer is {correct_answer} ")
     answer = input("what is your answer:").upper().strip()
+    while answer not in questions_options:
+        answer = input("\nInvalid input Enter your answer again(a,b,c,d):").strip().upper()
     number += 1
     question_list.append(question)
     return answer == correct_answer, number
@@ -131,6 +133,10 @@ def difficulty_selection() :
             user_name = input(
                 f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS}):").strip()
             while len(user_name) < MINIMUM_CHARACTERS or len(user_name) > MAXIMUM_CHARACTERS:
+                if len(user_name) < MINIMUM_CHARACTERS:
+                    print(f"Name too short, at least longer than {MINIMUM_CHARACTERS} length")
+                elif len(user_name) > MAXIMUM_CHARACTERS:
+                    print(f"Name too long, at least shorter than {MAXIMUM_CHARACTERS} length")
                 user_name = input(f"\nInput your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length:").strip()
             print(f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives ")
             while True:
@@ -160,7 +166,7 @@ def difficulty_selection() :
                     print(f"You don't have enough life {player_life}, Game over!")
                     user_information[user_name] = score
                     return user_name
-                if question_number >= 5:
+                if question_number > 8:
                     user_information[user_name] = score
                     print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
                     return user_name
@@ -201,6 +207,8 @@ SCORE_RULES = {
                    "description": "Start with 2 lives, gain 2 points for correct answers, lose 4 points for incorrect answers."
                    }
 }
+
+questions_options = ["A", "B", "C", "D"]
 
 options_list = []
 question_list = []
