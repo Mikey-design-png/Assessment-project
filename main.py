@@ -17,6 +17,7 @@ def display_rules():
 
 
 def mysterious_reward(user_name: str):
+    print("\nA mysterious reward:")
     if not user_name:
         print("You have not done any games yet")
     else:
@@ -78,7 +79,7 @@ def scoring_system(answer_correct: bool, level: str, score: int):
         if score < 0:
             score = 0
         point_lost = SCORE_RULES[level]["deduction"]
-        print(f"Incorrect!You have lost{point_lost}")
+        print(f"Incorrect!You have lost {point_lost} points")
     print(f"Your current score: {score} points at {level})")
     return score
 
@@ -89,7 +90,8 @@ def display_options(menu_option: dict) -> str:
     for menu_choice, menu_content in menu_option.items():
         options_list.append(menu_choice)
         if menu_content in SCORE_RULES:
-            print(f"-({menu_choice}){menu_content}-----{SCORE_RULES[menu_content]["description"]}")
+            level_description = SCORE_RULES[menu_content]["description"]
+            print(f"-({menu_choice}){menu_content}-----{level_description}")
         else:
             print(f"-({menu_choice}) {menu_content}")
     minimum_valid_range = options_list[0]
@@ -127,9 +129,9 @@ def difficulty_selection() :
             level = menu_option_difficulty[difficulty_choice]
             player_life = SCORE_RULES[level]["life_number"]
             user_name = input(
-                f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS})").strip()
+                f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS}):").strip()
             while len(user_name) < MINIMUM_CHARACTERS or len(user_name) > MAXIMUM_CHARACTERS:
-                user_name = input(f"Input your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length")
+                user_name = input(f"\nInput your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length:").strip()
             print(f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives ")
             while True:
                 if player_life > 0:
