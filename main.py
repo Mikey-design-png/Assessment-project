@@ -71,15 +71,20 @@ def scoring_system(answer_correct: bool, level: str, score: int):
 
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
+    options_list.clear()
     for menu_choice, menu_content in menu_option.items():
         options_list.append(menu_choice)
         if menu_content in SCORE_RULES:
             print(f"-({menu_choice}){menu_content}{SCORE_RULES[menu_content]["description"]}")
         else:
             print(f"-({menu_choice}) {menu_content}")
+    minimum_valid_range = options_list[0]
+    maximum_valid_range = options_list[len(options_list) - 1]
+    print(f"\nYou can select by entering {minimum_valid_range} to {maximum_valid_range}")
     choice: str = input("Enter your choice: ").upper().strip()
     while choice not in options_list:
-        choice: str = input("Enter your choice: ").upper().strip()
+        print(f"\nInvalid selection the input must be between {minimum_valid_range} and {maximum_valid_range}")
+        choice: str = input("Enter your choice again: ").upper().strip()
     return choice
 
 
@@ -158,7 +163,9 @@ menu_option: dict[str:str] = {
     "1": "Difficulty selection",
     "2": "View history",
     "3": "Redeem a mysterious reward (require 20 points)",
-    "4": "Quit the game"
+    "4": "Rules",
+    "5": "Quit the game"
+
 }
 
 menu_option_difficulty: dict[str:str] = {
@@ -194,8 +201,6 @@ while running:
         view_history()
     if option_choice =="3":
         mysterious_reward(user_name)
-    else:
-        print("\nInvalid selection. Please try again.")
 
 
 
