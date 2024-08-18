@@ -2,6 +2,19 @@ from question import *
 import random
 
 
+def display_rules():
+    print("\nDisplay the rules briefly:")
+    print("\n--Start: Choose a difficulty level and enter a name.")
+    print("--Lives: Start with lives based on difficulty. Lose a life if score hits 0.")
+    print("--Questions: Answer multiple-choice questions to earn points.")
+    print("--Wagering: After a correct answer, wager points to potentially gain more or lose points.")
+    print("--Scoring: Points vary by difficulty. Score below 0 is set to 0.")
+    print("--Rewards: Earn a reward if score reaches 20")
+    print("--Game End: The game ends if you run out of lives or answer 5 questions(minimum).")
+
+
+
+
 
 def mysterious_reward(user_name: str):
     if not user_name:
@@ -28,6 +41,7 @@ def mysterious_reward(user_name: str):
 
 
 def view_history():
+    print("\nView history:")
     if not user_information:
         print("No records")
     else:
@@ -75,7 +89,7 @@ def display_options(menu_option: dict) -> str:
     for menu_choice, menu_content in menu_option.items():
         options_list.append(menu_choice)
         if menu_content in SCORE_RULES:
-            print(f"-({menu_choice}){menu_content}{SCORE_RULES[menu_content]["description"]}")
+            print(f"-({menu_choice}){menu_content}-----{SCORE_RULES[menu_content]["description"]}")
         else:
             print(f"-({menu_choice}) {menu_content}")
     minimum_valid_range = options_list[0]
@@ -176,13 +190,13 @@ menu_option_difficulty: dict[str:str] = {
 }
 SCORE_RULES = {
     "Beginner level": {"increment": 4, "deduction": 2, "life_number": 4
-                       ,"description":"-----Start with 4 lives, gain 4 points for correct answers, lose 2 points for incorrect answers."},
+                       ,"description":"Start with 4 lives, gain 4 points for correct answers, lose 2 points for incorrect answers."},
     "Medium level": {"increment": 3, "deduction": 3, "life_number": 3
-                    ,"description":"-----Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers."},
+                    ,"description":"Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers."},
     "Mixed level": {"increment": 3, "deduction": 3, "life_number": 3
-                    ,"description":"-----Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers."},
+                    ,"description":"Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers."},
     "Hard level": {"increment": 2, "deduction": 4, "life_number": 2,
-                   "description": "-----Start with 2 lives, gain 2 points for correct answers, lose 4 points for incorrect answers."
+                   "description": "Start with 2 lives, gain 2 points for correct answers, lose 4 points for incorrect answers."
                    }
 }
 
@@ -201,6 +215,11 @@ while running:
         view_history()
     if option_choice =="3":
         mysterious_reward(user_name)
+    if option_choice == "4":
+        display_rules()
+    if option_choice == "5":
+        print("Game is quitting.........")
+        running = False
 
 
 
