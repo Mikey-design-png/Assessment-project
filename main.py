@@ -72,8 +72,11 @@ def scoring_system(answer_correct: bool, level: str, score: int):
 def display_options(menu_option: dict) -> str:
     print("\nchoose an item:")
     for menu_choice, menu_content in menu_option.items():
-        print(f"-({menu_choice}) {menu_content}")
         options_list.append(menu_choice)
+        if menu_content in SCORE_RULES:
+            print(f"-({menu_choice}){menu_content}{SCORE_RULES[menu_content]["description"]}")
+        else:
+            print(f"-({menu_choice}) {menu_content}")
     choice: str = input("Enter your choice: ").upper().strip()
     while choice not in options_list:
         choice: str = input("Enter your choice: ").upper().strip()
@@ -159,20 +162,21 @@ menu_option: dict[str:str] = {
 }
 
 menu_option_difficulty: dict[str:str] = {
-    "1": "Beginner level------Start with 4 lives, gain 4 points for correct answers," +
-         " lose 2 points for incorrect answers. ",
-    "2": "Medium level------Start with 3 lives, gain 3 points for correct answers," +
-         " lose 3 points for incorrect answers. ",
-    "3": "Hard level------Start with 2 lives, gain 2 points for correct answers," +
-         " lose 4 points for incorrect answers. ",
-    "4": "Mixed level------Start with 3 lives, gain 3 points for correct answers," +
-         " lose 3 points for incorrect answers. "
+    "1": "Beginner level",
+    "2": "Medium level",
+    "3": "Hard level",
+    "4": "Mixed level"
 }
 SCORE_RULES = {
-    "Beginner level": {"increment": 4, "deduction": 2, "life_number": 4},
-    "Medium level": {"increment": 3, "deduction": 3, "life_number": 3},
-    "Mixed level": {"increment": 3, "deduction": 3, "life_number": 3},
-    "Hard level": {"increment": 2, "deduction": 4, "life_number": 2}
+    "Beginner level": {"increment": 4, "deduction": 2, "life_number": 4
+                       ,"description":"-----Start with 4 lives, gain 4 points for correct answers, lose 2 points for incorrect answers."},
+    "Medium level": {"increment": 3, "deduction": 3, "life_number": 3
+                    ,"description":"-----Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers."},
+    "Mixed level": {"increment": 3, "deduction": 3, "life_number": 3
+                    ,"description":"-----Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers."},
+    "Hard level": {"increment": 2, "deduction": 4, "life_number": 2,
+                   "description": "-----Start with 2 lives, gain 2 points for correct answers, lose 4 points for incorrect answers."
+                   }
 }
 
 options_list = []
