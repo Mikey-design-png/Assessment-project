@@ -56,11 +56,11 @@ def wager_system(score: int) -> int:
         try:
             wager_amount = int(input(f"\nHow many points you wanna wager between {MINIMUM_WAGER_AMOUNT} and {score}(Max):"))
             if wager_amount <= 0 or wager_amount > score:
-                print(f"Invalid wager. Enter a value between {MINIMUM_WAGER_AMOUNT} and {score}.")
+                print(f"\nInvalid wager. Enter a value between {MINIMUM_WAGER_AMOUNT} and {score}.")
             else:
                 return wager_amount
         except ValueError:
-            print(f"Invalid input. Please enter a valid number.")
+            print(f"\nInvalid input. Please enter a valid number between {MINIMUM_WAGER_AMOUNT} and {score}.")
 
 
 def life_system(life: int):
@@ -125,8 +125,8 @@ def ask_question(difficulty: str, number: int, score:int, life:int) -> bool and 
 
 
 def difficulty_selection() :
-    score = 0
-    question_number = 1
+    score = 16
+    question_number = 13
     while True:
         difficulty_choice = display_options(menu_option_difficulty)
         if difficulty_choice in menu_option_difficulty:
@@ -146,8 +146,9 @@ def difficulty_selection() :
                     correct, question_number = ask_question(level, question_number,score,player_life)
                     score = scoring_system(correct, level, score)
                     if correct:
+                        print("If you answer the wager question incorrect, you will lose your wager points")
                         wager_option = input("\nDo you wanna wager your socre? (Y/N)").upper().strip()
-                        while wager_option != "N" or wager_option != "Y":
+                        while wager_option != "N" and wager_option != "Y":
                             print("\nInvalid input! The valid input is Y or N")
                             wager_option = input("Do you wanna wager you score?(Y/N)").upper().strip()
                         if wager_option == "Y":
@@ -171,9 +172,19 @@ def difficulty_selection() :
                     print(f"You don't have enough life ({player_life}), Game over!")
                     user_information[user_name] = score
                     return user_name
-                if question_number > 8:
+                if question_number % 5 == 0 and question_number != 0:
+                    continue_game = input(f"This the {question_number} already, do you still wanna continue(Y/N)").strip().upper()
+                    while continue_game != "Y" and continue_game != "N":
+                        print("\nInvalid input. Only Y and N")
+                        continue_game = input(f"This the {question_number} already, do you still wanna continue(Y/N)").strip().upper()
+                    if continue_game == "N":
+                        print(f"\nCongratulations ({user_name}) have finished the game, your final score is {score}")
+                        print("If your score is over or equal to 20, you can redeem a rewawrd in the menu page")
+                        user_information[user_name] = score
+                        return user_name
+                if question_number > TOTAL_QUESTION:
                     user_information[user_name] = score
-                    print(f"Congratulations you have finished all the questiosn round, your final score is {score}")
+                    print(f"\nCongratulations ({user_name}) have finished all the questiosn round, your final score is {score}")
                     return user_name
         else:
             print("Invalid selection, try again")
@@ -222,6 +233,7 @@ MAXIMUM_CHARACTERS = 8
 MINIMUM_CHARACTERS = 1
 running = True
 user_name = None
+TOTAL_QUESTION = 15
 while running:
     option_choice = display_options(menu_option)
     if option_choice == "1":
