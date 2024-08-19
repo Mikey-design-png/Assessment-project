@@ -54,9 +54,9 @@ def view_history():
 def wager_system(score: int) -> int:
     while True:
         try:
-            wager_amount = int(input(f"\nHow many points you wanna wager Max:{score} :"))
+            wager_amount = int(input(f"\nHow many points you wanna wager between {MINIMUM_WAGER_AMOUNT} and {score}(Max):"))
             if wager_amount <= 0 or wager_amount > score:
-                print(f"Invalid wager. Enter a value between 1 and {score}.")
+                print(f"Invalid wager. Enter a value between {MINIMUM_WAGER_AMOUNT} and {score}.")
             else:
                 return wager_amount
         except ValueError:
@@ -146,7 +146,10 @@ def difficulty_selection() :
                     correct, question_number = ask_question(level, question_number,score,player_life)
                     score = scoring_system(correct, level, score)
                     if correct:
-                        wager_option = input("Do you wanna wager your socre? (Y/N)").upper()
+                        wager_option = input("\nDo you wanna wager your socre? (Y/N)").upper().strip()
+                        while wager_option != "N" or wager_option != "Y":
+                            print("\nInvalid input! The valid input is Y or N")
+                            wager_option = input("Do you wanna wager you score?(Y/N)").upper().strip()
                         if wager_option == "Y":
                             wager_amount = wager_system(score)
                             correct, question_number = ask_question(level, question_number,score,player_life)
@@ -211,7 +214,7 @@ SCORE_RULES = {
 }
 
 questions_options = ["A", "B", "C", "D"]
-
+MINIMUM_WAGER_AMOUNT = 1
 options_list = []
 question_list = []
 user_information = {}
