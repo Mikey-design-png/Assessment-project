@@ -104,7 +104,7 @@ def display_options(menu_option: dict) -> str:
     return choice
 
 
-def ask_question(difficulty: str, number: int) -> bool and int:
+def ask_question(difficulty: str, number: int, score:int, life:int) -> bool and int:
     question = random.choice(questions[difficulty])
     while question in question_list:
         question = random.choice(questions[difficulty])
@@ -114,7 +114,9 @@ def ask_question(difficulty: str, number: int) -> bool and int:
         print(options)
     correct_answer = question["answer"]
     print(f"correct answer is {correct_answer} ")
-    answer = input("what is your answer:").upper().strip()
+    print(f"\nYour current score: {score}")
+    print(f"The Remaining lives: {life}")
+    answer = input("\nwhat is your answer(a,b,c,d):").upper().strip()
     while answer not in questions_options:
         answer = input("\nInvalid input Enter your answer again(a,b,c,d):").strip().upper()
     number += 1
@@ -141,13 +143,13 @@ def difficulty_selection() :
             print(f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives ")
             while True:
                 if player_life > 0:
-                    correct, question_number = ask_question(level, question_number)
+                    correct, question_number = ask_question(level, question_number,score,player_life)
                     score = scoring_system(correct, level, score)
                     if correct:
                         wager_option = input("Do you wanna wager your socre? (Y/N)").upper()
                         if wager_option == "Y":
                             wager_amount = wager_system(score)
-                            correct, question_number = ask_question(level, question_number)
+                            correct, question_number = ask_question(level, question_number,score,player_life)
                             if correct:
                                 score += wager_amount
                                 print(f"Congratulation!You have gained your wager points,the current score is {score}")
@@ -163,7 +165,7 @@ def difficulty_selection() :
                         print("Be careful! If your lives reach 0, the game is over")
 
                 else:
-                    print(f"You don't have enough life {player_life}, Game over!")
+                    print(f"You don't have enough life ({player_life}), Game over!")
                     user_information[user_name] = score
                     return user_name
                 if question_number > 8:
