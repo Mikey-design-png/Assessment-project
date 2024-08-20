@@ -563,6 +563,7 @@ def ask_question(difficulty: str, score: int, player_life: int) -> (bool, int):
         answer = input(
             "\nInvalid input. Enter your answer again (a, b, c, d): "
         ).strip().upper()
+    print(f"Correct answer is {correct_answer}")
 
     # Return whether the user's answer was correct and the question number
     return answer == correct_answer, question_number
