@@ -1,12 +1,34 @@
+"""
+Created by Mikey chen.
+Created on 2024-07-25
+"""
+
+"""
+Import statements for the quiz game script.
+
+Imports:
+- `question` module: Contains data and functions related to quiz questions.(question bank)
+- `random`: Provides functions for generating random numbers, used to select random quiz questions.
+"""
 from question import *
 import random
 
+# functions:
+def recognition_message(player_name: str) -> None:
+    """
+    Displays a recognition message and badge for players who score 20 points at the Hard level.
 
-def recognition_message(player_name: str):
+    Arguments:
+    ---------
+        player_name(str): The name of player receiving recognition
+    """
+    #Display the player's name and his achievements!
     print(f"\n🎉 Congratulations, {player_name}! 🎉")
     print("You've achieved an incredible feat by scoring 20 points at the Hard level!")
     print("Your dedication and skill have set you apart as a top player.")
     print("Here's a special badge just for you:")
+
+    #Define a badge with some lines to recognize player achivements
     badge = [
         "    _____",
         "   /     \\",
@@ -15,6 +37,8 @@ def recognition_message(player_name: str):
         "    |||||",
         "    |||||",
     ]
+
+    # Print each line of the badge to display the recognition award
     for line in badge:
         print(line)
     print("\nKeep up the great work and continue to conquer the challenges!")
