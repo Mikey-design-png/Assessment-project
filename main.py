@@ -29,7 +29,7 @@ def recognition_message(player_name: str) -> None:
     print("Here's a special badge just for you:")
 
     #Define a badge with some lines to recognize player achivements
-    badge = [
+    badge: list = [
         "    _____",
         "   /     \\",
         "  | () () |",
@@ -44,23 +44,55 @@ def recognition_message(player_name: str) -> None:
     print("\nKeep up the great work and continue to conquer the challenges!")
 
 
-def get_valid_name():
+def get_valid_name() -> str:
+    """
+       Prompts the user for their name and ensures it is within the valid length range.
+        This function requests the user to input their name, ensuring that the length of the name
+         within the specified minimum(1) and maximum(8) character limits. If the user’s input does not
+        meet these length requirements, the function provides feedback and requests the input again
+        until a valid name is entered.
+
+       Returns:
+           name(str): The valid name entered by the user.
+       """
+    # Prompt the user for their name with length constraints and strip any leading/trailing whitespace.
     name = input(
         f"What is your name (length needs to be between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS}):"
     ).strip()
+
+    # Check if the entered name length is within the valid range.
+    # if the length of the enter name is within the invalid range
+    # This while loop will loop to ask the name again
+    # Until the name is within the valid range
+    # The while loop will stop and proceed
     while len(name) < MINIMUM_CHARACTERS or len(name) > MAXIMUM_CHARACTERS:
+        # As length of the entered name is less than minimum range(1) it will raise a message to inform too short
         if len(name) < MINIMUM_CHARACTERS:
+            # Inform the users minimum valid range for the length of the name
             print(f"Name too short, at least longer than {MINIMUM_CHARACTERS} length")
+        # As the length of the name is more than the maximum range(8) it will raise a message
         elif len(name) > MAXIMUM_CHARACTERS:
+            # Inform the users the name is too long and remind them the maximum valid range.
             print(f"Name too long, at least shorter than {MAXIMUM_CHARACTERS} length")
-        name = input(
+        # Prompt the user to input their name again until it meets the length requirements.
+        name: str = input(
             f"\nInput your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length:"
         ).strip()
+    # Return the valid name entered by the user.
     return name
 
 
 def display_rules():
+    """
+        Briefly display the rules and instructions for the game.
+
+        This function prints out a summary of the game's rules and instructions to guide the user.
+        It provides information on how to start the game, manage lives, answer questions, wager points,
+        and how scoring and rewards work. Additionally, it explains the conditions under which the game ends.
+        """
+    # Print a heading to indicate the display of game rules.
     print("\nDisplay the rules briefly:")
+    # 
     print("\n--Start: Choose a difficulty level and enter a name.")
     print("--Lives: Start with lives based on difficulty. Lose a life if score hits 0.")
     print("--Questions: Answer multiple-choice questions to earn points.")
