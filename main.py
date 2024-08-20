@@ -48,7 +48,7 @@ def get_valid_name() -> str:
     """
        Prompts the user for their name and ensures it is within the valid length range.
         This function requests the user to input their name, ensuring that the length of the name
-         within the specified minimum(1) and maximum(8) character limits. If the user’s input does not
+        within the specified minimum(1) and maximum(8) character limits. If the user’s input does not
         meet these length requirements, the function provides feedback and requests the input again
         until a valid name is entered.
 
@@ -77,7 +77,7 @@ def get_valid_name() -> str:
         # Prompt the user to input their name again until it meets the length requirements.
         name: str = input(
             f"\nInput your name again between {MINIMUM_CHARACTERS} and {MAXIMUM_CHARACTERS} length:"
-        ).strip()
+        ).strip()  # .strip() to trim the blank from the input
     # Return the valid name entered by the user.
     return name
 
@@ -92,36 +92,70 @@ def display_rules():
         """
     # Print a heading to indicate the display of game rules.
     print("\nDisplay the rules briefly:")
-    # 
+
+    # Print instructions on how to start the game.
     print("\n--Start: Choose a difficulty level and enter a name.")
+
+    # Print instructions on managing lives based on the selected difficulty level.
     print("--Lives: Start with lives based on difficulty. Lose a life if score hits 0.")
+
+    #  Print instructions on how to answer questions to earn points.
     print("--Questions: Answer multiple-choice questions to earn points.")
+
+    # Print instructions on the wagering system available after answering a question correctly.
     print(
         "--Wagering: After a correct answer, wager points to potentially gain more or lose points."
     )
+
+    # Print instructions on how scoring varies with difficulty and how negative scores are handled.
     print("--Scoring: Points vary by difficulty. Score below 0 is set to 0.")
+
+    # Print instructions on earning rewards and conditions for receiving them.
     print("--Rewards: Earn a reward if score reaches 20")
+
+    # Print instructions on the conditions under which the game ends.
     print(
         "--Game End: The game ends if you run out of lives or answer 5 questions(minimum)."
     )
 
 
-def continue_function():
+def continue_function(question_amount: int) -> bool:
+    """
+        Prompts the user to decide whether to continue the game or not.
+
+        This function asks the user if they want to continue playing after answering every 5 questions
+        It validates the user's input to ensure it is either 'Y' or 'N'. If the input is invalid, it prompts the user
+        again until the input is within the valid range.
+
+        Arguments:
+        ---------
+        question_amount(int): The number of questions done
+
+        Returns:
+            bool: True if the user chooses to continue(y), False otherwise(n).
+        """
+    # prompts the user to decide whether continuing the game.Informing the number of questions done.
     continue_game = (
         input(
-            f"\nYou have answere {len(question_list)} questions, do you still wanna continue(Y/N)"
+            f"\nYou have answered {question_amount} questions, do you still wanna continue(Y/N):"
         )
-        .strip()
-        .upper()
+        .strip()  # Remove the whitespace from the input
+        .upper()  # Convert the input to uppercase for the uniform type
     )
+
+    # If the input is not either Y or N(VALID_WAGER_OPTIONS)
+    # The while loop will loop and ask them again
+    # Until they meet the requirements the loop will stop
     while continue_game not in VALID_WAGER_OPTIONS:
+        # Raise an error message to inform the users about the valid range
         print("\nInvalid input. Only Y and N")
+        # Prompt the user again for a valid input.Informing the number of questions done.
         continue_game = (
             input(
-                f"\nYou have answere {len(question_list)} questions, do you still wanna continue(Y/N)"
+                f"\nYou have answered {question_amount} questions, do you still wanna continue(Y/N):"
             )
-            .strip()
-            .upper()
+            .strip()  # Remove the whitespace from the input
+            .upper() # Convert the input to uppercase for the uniform type
         )
     return continue_game == "Y"
 
@@ -300,7 +334,7 @@ def difficulty_selection():
                         and question_number != 0
                         and question_number != 15
                     ):
-                        continue_option = continue_function()
+                        continue_option = continue_function(question_number)
                         if not continue_option:
                             print(
                                 f"\nCongratulations ({user_name}) have finished the game, your final score is {score}"
