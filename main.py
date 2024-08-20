@@ -13,22 +13,24 @@ Imports:
 from question import *
 import random
 
+
 # functions:
 def recognition_message(player_name: str) -> None:
     """
-    Displays a recognition message and badge for players who score 20 points at the Hard level.
+    Displays a recognition message and badge for players who score
+    20 points at the Hard level.
 
     Arguments:
     ---------
         player_name(str): The name of player receiving recognition
     """
-    #Display the player's name and his achievements!
+    # Display the player's name and his achievements!
     print(f"\n🎉 Congratulations, {player_name}! 🎉")
     print("You've achieved an incredible feat by scoring 20 points at the Hard level!")
     print("Your dedication and skill have set you apart as a top player.")
     print("Here's a special badge just for you:")
 
-    #Define a badge with some lines to recognize player achivements
+    # Define a badge with some lines to recognize player achivements
     badge: list = [
         "    _____",
         "   /     \\",
@@ -155,7 +157,7 @@ def continue_function(question_amount: int) -> bool:
                 f"\nYou have answered {question_amount} questions, do you still wanna continue(Y/N):"
             )
             .strip()  # Remove the whitespace from the input
-            .upper() # Convert the input to uppercase for the uniform type
+            .upper()  # Convert the input to uppercase for the uniform type
         )
 
     # Return True if the user wants to continue (input 'Y'), False(input "N")
@@ -237,7 +239,6 @@ def view_history():
         # Enumerate through the user information and display each player's details
         # `enumerate` starts counting from 1, providing the index (place) and the player's name
         for place, name in enumerate(user_information.keys(), start=1):
-
             # Retrieve the final score and level by these keys.
             final_score: int = user_information[name]["score"]
             level: str = user_information[name]["level"]
@@ -284,36 +285,56 @@ def wager_system(score: int, level: str, player_life: int) -> int:
             print("\nInvalid input! The valid input is Y or N")
             # Prompt the users to enter an valid value
             wager_option = input("Do you wanna wager you score?(Y/N)").upper().strip()
-        # 
+        # Validate the wager option
         if wager_option == "Y":
             while True:
                 try:
+                    # Prompt the player to enter the amount they want to wager
+                    # And inform the valid range based on their score
                     wager_amount = int(
                         input(
                             f"\nHow many points you wanna wager between {MINIMUM_WAGER_AMOUNT} and {score}(Max):"
                         )
                     )
+                    # If wager amount is within the invalid range
+                    # The loop will keep asking the valid wager amount
+                    # It will stop until the valid number
                     while wager_amount <= 0 or wager_amount > score:
+                        # Raise an error message and inform the valid range.
                         print(
                             f"\nInvalid wager. Enter a value between {MINIMUM_WAGER_AMOUNT} and {score}."
                         )
+                        # Prompt users to enter a valid wager amount
                         wager_amount = int(
                             input(
                                 f"\nHow many points you wanna wager between {MINIMUM_WAGER_AMOUNT} and {score}(Max):"
                             )
                         )
+
+                    # Ask a question and determine if the answer is correct
                     correct, question_number = ask_question(level, score, player_life)
+                    # If the answer is correct,then the correct variable will True
                     if correct:
+                        # Add their wager points to their score
                         score += wager_amount
+                        # Update their new score and print it out to inform the users
                         print(
                             f"Congratulation!You have gained your wager points,the current score is {score}"
                         )
+                    # If the answer is incorrect,then the correct variable will False
+                    # No False = True
                     elif not correct:
+                        # Minus their wager points to their score
                         score -= wager_amount
+                        # Update their new score and print it out to inform the users
                         print(
                             f"Unlucky!You lost your wagered points. Your new score is {score} points."
                         )
+                    # Return the updated score
                     return score
+                # if they enter float or string for the wager amount
+                # They will be raised an error message and inform the valid range
+                # And go back to ask the wager amount again
                 except ValueError:
                     print(
                         f"\nInvalid input. Please enter a valid number between {MINIMUM_WAGER_AMOUNT} and {score}."
@@ -324,196 +345,378 @@ def wager_system(score: int, level: str, player_life: int) -> int:
 
 
 def life_system(life: int):
-    life_deduction = 1
-    life -= life_deduction
+    """
+      Deducts a life from the player's total and prints the remaining lives.
+
+      This function reduces the player's life count by a fixed amount (1) and prints a message
+      indicating the number of lives remaining.
+
+      Arguments:
+      ---------
+      life (int): The current number of lives the player has.
+
+      Returns:
+      -------
+      int: The updated number of lives after deduction.
+      """
+    life_deduction: int = 1  # Amount of life to be deducted
+    life -= life_deduction  # Deduct life
     print(f"⚠️ You have lost one life! Remaining lives: {life}")
     return life
 
 
-def scoring_system(answer_correct: bool, level: str, score: int):
+def scoring_system(answer_correct: bool, level: str, score: int) -> int:
+    """
+       Updates the player's score based on the correctness of the answer and the difficulty level.
+
+       This function adjusts the player's score according to whether their answer was correct or not.
+       It increases the score based on the level's increment rule if the answer is correct, or decreases
+       it based on the level's deduction rule if the answer is incorrect. The function ensures that the score
+       does not drop below zero and prints the updated score.
+
+       Arguments:
+       ---------
+       answer_correct (bool): Indicates if the player's answer was correct.
+       level (str): The difficulty level affecting the score increment or deduction.
+       score (int): The current score of the player.
+
+       Returns:
+       -------
+       int: The updated score after applying the scoring rules.
+       """
+    # the answer is correct, their score will increase with the increment at their level
     if answer_correct:
+        # By using level as the key to take out the increment at different levels
+        # Increase score based on the level's increment rule
         score += SCORE_RULES[level]["increment"]
+        # Print out the message to inform of their current score
         print(f"\nCorrect!You have gained {SCORE_RULES[level]['increment']} points.")
     else:
+        # decrease score based on the level's deduction rule
         score -= SCORE_RULES[level]["deduction"]
+        # As the score is less 0, it will set to 0 automatically.
+        # Ensure the score does not drop below zero, you will lose one life instead losing points
         if score < 0:
-            score = 0
+            score: int = 0
         point_lost = SCORE_RULES[level]["deduction"]
+        # Print out the message to inform of their current score
         print(f"\nIncorrect!You have lost {point_lost} points")
     print(f"Your current score: {score} points at {level})")
+    # Return updated score
     return score
 
 
 def display_options(menu_selection: dict) -> str:
+    """
+       Displays a list of menu options and prompts the user to select one.
+
+       This function prints out all the available options from the provided menu selection dictionary,
+       including descriptions for each option if available. It prompts the user to enter a choice, validates
+       that the choice is within the valid range, and returns the selected option.
+
+       Arguments: --------- menu_selection (dict): A dictionary,
+                                                   which keys are option identifiers and values are
+                                                   option names or descriptions.
+
+       Returns:
+       -------
+       choice(str): The selected menu option.
+       """
     print("\nchoose an item:")
+    # Clear any previous options from the list
     options_list.clear()
+    # Display menu options and their descriptions
     for menu_choice, menu_content in menu_selection.items():
+
+        # Add the option identifier to the options list for subsequent functions
         options_list.append(menu_choice)
+
+        # Validates if this menu content (value in the dictionary) is in SCORE_RULES
+        # This is for displaying the description of the different difficulty level
         if menu_content in SCORE_RULES:
+            # As this menu content is about the difficulty selection
+            # It will print the description alon with different level
             level_desription = SCORE_RULES[menu_content]["description"]
             print(f"-({menu_choice}){menu_content}-----{level_desription}")
         else:
+            # As this menu content is not about the difficulty selection
+            # It will print out as usual like menu
             print(f"-({menu_choice}) {menu_content}")
+    # Define the valid range for options
+    # which depends on the length of their options
+    # I place the menu option orderly by number, starting from 1
+    # Therefore,the minimum range will be the first option
     minimum_valid_range = options_list[0]
+    # Since the index in list start from 0,
+    # so i minus 1 to get last menu option
     maximum_valid_range = options_list[len(options_list) - 1]
     print(
         f"\nYou can select by entering {minimum_valid_range} to {maximum_valid_range}"
     )
+    # Prompt user for a choice and validate input
     choice: str = input("Enter your choice: ").upper().strip()
+    # if choice is not within the valid range
+    # the while loop will keep asking until you enter a valid range
     while choice not in options_list:
+        # Inform the users about the valid range
         print(
             f"\nInvalid selection the input must be between {minimum_valid_range} and {maximum_valid_range}"
         )
         choice: str = input("Enter your choice again: ").upper().strip()
+    # Return the choice
     return choice
 
 
 def ask_question(difficulty: str, score: int, player_life: int) -> bool and int:
+    """
+        Selects and presents a random question from the given difficulty level, and processes the user's answer.
+
+        This function randomly selects a question from the specified difficulty level that has not been asked yet,
+        displays it along with its options, and prompts the user to answer. It validates the user's input and
+        returns whether the answer was correct and the number of questions asked.
+
+        Arguments:
+        ----------
+        difficulty (str): The difficulty level of the questions to select from.
+        score (int): The current score of the player.
+        player_life (int): The remaining lives of the player.
+
+        Returns:
+        -------
+        answer == correct_answer(bool): The correctness of the answer
+       question_number: int = the number of questions the user have been asked
+
+        """
+
+    # Select a random question from the specified difficulty level
     question = random.choice(questions[difficulty])
+    # Ensure the selected question has not been asked before
     while question in question_list:
         question = random.choice(questions[difficulty])
+
+    # Store the question into the qeustion_display first
+    # For subsequent functions
     question_display = question["question"]
+
+    # Add the question to the list of asked questions
     question_list.append(question)
+
+    # Determine the current question number
     question_number = len(question_list)
+
+    # Display the question number and question
     print(f"\n{question_number}:{question_display}")
+
+    # Display the options
     for options in question["options"]:
         print(options)
     correct_answer = question["answer"]
     print(f"You current score is {score}")
+
+    # Provide textual feedback to inform players about their current status
     print(f"Remaining lives: {player_life}")
     print(f"correct answer is {correct_answer} ")
+
+    # Get the user's answer and validate it
     answer = input("\nwhat is your answer(a,b,c,d):").upper().strip()
-    while answer not in questions_options:
+    # Looping until user enter a valid range
+    while answer not in QUESTIONS_OPTIONS:
+        # Message inform the valid range
         answer = (
             input("\nInvalid input Enter your answer again(a,b,c,d):").strip().upper()
         )
+    # Return whether the user's answer was correct and the question number
     return answer == correct_answer, question_number
 
 
-def difficulty_selection():
+def difficulty_selection() -> str:
+    """
+    Manages the game flow by allowing the user to select a difficulty level, start the game, and handle game
+    progression.
+
+       This function prompts the user to select a difficulty level and provides a name. It then starts the game by
+       asking questions based on the selected difficulty. The function handles scoring, life management,
+       and user choices after every 5 questions. The game continues until the user runs out of lives, answers all
+       questions, or chooses to stop.
+
+       Returns:
+       -------
+       str: The name of the user who played the game.
+       """
+    # Initially define the score as 0
     score = 0
     while True:
+        # Display difficulty options and get user's choice
         difficulty_choice = display_options(menu_option_difficulty)
-        if difficulty_choice in menu_option_difficulty:
-            level = menu_option_difficulty[difficulty_choice]
-            player_life = SCORE_RULES[level]["life_number"]
-            user_name = get_valid_name()
-            print(
-                f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives "
-            )
-            while True:
-                if player_life > 0:
-                    correct, question_number = ask_question(level, score, player_life)
-                    score = scoring_system(correct, level, score)
-                    if (
+        # By using difficulty_choice as key to take out the level content as level
+        level = menu_option_difficulty[difficulty_choice]
+        # Get initial lives based on difficulty
+        player_life = SCORE_RULES[level]["life_number"]
+        # Prompt the user for their name
+        user_name = get_valid_name()
+        # Provide these messages to inform them about their curret status
+        print(
+            f"\nHello {user_name}!Your selected {level}, you start with {player_life} lives "
+        )
+        while True:
+            # Check if the player_life is > 0
+            if player_life > 0:
+                # Call the function and answer the question
+                # get the correctness of the answer and the number of the questions
+                correct, question_number = ask_question(level, score, player_life)
+                # Update the score by calling the scoring_system by using correct as a paramate
+                score = scoring_system(correct, level, score)
+                # Check if it's time to ask if the user wants to continue
+                if (
                         question_number % 5 == 0
                         and question_number != 0
                         and question_number != 15
-                    ):
-                        continue_option = continue_function(question_number)
-                        if not continue_option:
-                            print(
-                                f"\nCongratulations ({user_name}) have finished the game, your final score is {score}"
-                            )
-                            if score >= 20:
-                                print("You can redeem a reward in the menu.")
-                            user_information[user_name] = {
-                                "score": score,
-                                "level": level,
-                            }
-                            return user_name
-                    if question_number >= TOTAL_QUESTION:
-                        user_information[user_name] = {"score": score, "level": level}
+
+                ):
+                    # receive the continue option return from continue function
+                    continue_option = continue_function(question_number)
+                    # If the continue_option is not "Y", it means "N"
+                    # Means False, No False means True, running the related function
+                    if not continue_option:
+                        # Finish the game, overview the information
                         print(
-                            f"\nCongratulations ({user_name}) have finished all the questiosn round, your final score "
-                            f"is {score}"
+                            f"\nCongratulations ({user_name}) have finished the game, your final score is {score}"
                         )
+                        # Remind the user to redeem the mysterious reward
+                        # If their final score is enough
+                        if score >= 20:
+                            # Inform users are eligible for the reward
+                            print("You can redeem a reward in the menu.")
+                        # Update the data for the view history and mysterious reward functions
+                        user_information[user_name] = {
+                            "score": score,
+                            "level": level,
+                        }
+                        # Returning user_name for view history function
+                        # End of the loop and function
                         return user_name
-                    if correct:
-                        score = wager_system(score, level, player_life)
-                    if score == 0:
-                        print(f"\nWarning: Your score is {score}.")
-                        print("You are gonna lose one life instead of points")
-                        player_life = life_system(player_life)
-                        print("Be careful! If your lives reach 0, the game is over")
-                else:
-                    print(f"You don't have enough life ({player_life}), Game over!")
+                # Check if all questions have been answered
+                if question_number >= TOTAL_QUESTION:
                     user_information[user_name] = {"score": score, "level": level}
+                    print(
+                        f"\nCongratulations ({user_name}) have finished all the questiosn round, your final score "
+                        f"is {score}"
+                    )
                     return user_name
+                # Handle wagering if the answer was correct
+                if correct:
+                    score = wager_system(score, level, player_life)
+                # educt life if score is zero
+                if score == 0:
+                    print(f"\nWarning: Your score is {score}.")
+                    print("You are gonna lose one life instead of points")
+                    player_life = life_system(player_life)
+                    print("Be careful! If your lives reach 0, the game is over")
+            # End the game if lives are exhausted
+            else:
+                print(f"You don't have enough life ({player_life}), Game over!")
+                user_information[user_name] = {"score": score, "level": level}
+                return user_name
 
-        else:
-            print("Invalid selection, try again")
 
-
+# Dictionary mapping difficulty levels to their specific question bank
 questions: dict = {
-    "Beginner level": beginner_questions,
-    "Medium level": medium_level_questions,
-    "Hard level": hard_level_questions,
-    "Mixed level": mixed_level_questions,
+    "Beginner level": beginner_questions,  # Questions for the Beginner difficulty
+    "Medium level": medium_level_questions,  # Questions for the Medium difficulty
+    "Hard level": hard_level_questions,  # Questions for the Hard difficulty
+    "Mixed level": mixed_level_questions,  # Questions for the Mixed difficulty
 }
 
+# Dictionary mapping menu options to their actions
 menu_option: dict[str:str] = {
-    "1": "Difficulty selection",
-    "2": "View history",
-    "3": "Redeem a mysterious reward (require 20 points)",
-    "4": "Rules",
-    "5": "Quit the game",
+    "1": "Difficulty selection",  # Option to select the difficulty level
+    "2": "View history",  # Option to view game history
+    "3": "Redeem a mysterious reward (require 20 points)",  # Option to redeem a reward if score >= 20
+    "4": "Rules",  # Option to display the rules of the game
+    "5": "Quit the game",  # Option to quit the game
 }
 
+# Dictionary mapping menu selection numbers to difficulty levels
 menu_option_difficulty: dict[str:str] = {
-    "1": "Beginner level",
-    "2": "Medium level",
-    "3": "Hard level",
-    "4": "Mixed level",
+    "1": "Beginner level",  # Difficulty level for Beginners
+    "2": "Medium level",  # Difficulty level for Medium
+    "3": "Hard level",  # Difficulty level for Hard
+    "4": "Mixed level",  # Difficulty level for Mixed
 }
+
+# Dictionary containing scoring rules for each difficulty level
 SCORE_RULES = {
     "Beginner level": {
-        "increment": 4,
-        "deduction": 2,
-        "life_number": 4,
+        "increment": 4,  # Points gained for a correct answer
+        "deduction": 2,  # Points lost for an incorrect answer
+        "life_number": 4,  # Number of lives at the start
         "description": "Start with 4 lives, gain 4 points for correct answers, lose 2 points for incorrect answers.",
     },
     "Medium level": {
-        "increment": 3,
-        "deduction": 3,
-        "life_number": 3,
+        "increment": 3,  # Points gained for a correct answer
+        "deduction": 3,  # Points lost for an incorrect answer
+        "life_number": 3,  # Number of lives at the start
         "description": "Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers.",
     },
     "Mixed level": {
-        "increment": 3,
-        "deduction": 3,
-        "life_number": 3,
+        "increment": 3,  # Points gained for a correct answer
+        "deduction": 3,  # Points lost for an incorrect answer
+        "life_number": 3,  # Number of lives at the start
         "description": "Start with 3 lives, gain 3 points for correct answers, lose 3 points for incorrect answers.",
     },
     "Hard level": {
-        "increment": 2,
-        "deduction": 4,
-        "life_number": 2,
+        "increment": 2,  # Points gained for a correct answer
+        "deduction": 4,  # Points lost for an incorrect answer
+        "life_number": 2,  # Number of lives at the start
         "description": "Start with 2 lives, gain 2 points for correct answers, lose 4 points for incorrect answers.",
     },
 }
 
-questions_options = ["A", "B", "C", "D"]
+# List of valid answer options for questions
+QUESTIONS_OPTIONS = ["A", "B", "C", "D"]
+
+# List of valid options for wagering and continue option
 VALID_WAGER_OPTIONS = ["Y", "N"]
+
+# Minimum amount of points that can be wagered
 MINIMUM_WAGER_AMOUNT = 1
+
+# List to store options displayed in the menu
 options_list = []
+
+# List to track the questions that have been asked
 question_list = []
+
+# Dictionary to store user information, including scores and levels
 user_information = {}
+
+# Constants for username length validation
 MAXIMUM_CHARACTERS = 8
 MINIMUM_CHARACTERS = 1
+
+# Flag to control the main game loop
 running = True
+
+# Variable to store the current user's name
 user_name = None
+
+# Total number of questions in the game
 TOTAL_QUESTION = 15
+
+# Main game loop
 while running:
+    # Display the menu options and get the user's choice
     option_choice = display_options(menu_option)
+
+    # Carrying out corresponding function based on the user's choice
     if option_choice == "1":
-        user_name = difficulty_selection()
-    if option_choice == "2":
-        view_history()
-    if option_choice == "3":
-        mysterious_reward(user_name)
-    if option_choice == "4":
-        display_rules()
-    if option_choice == "5":
-        print("Game is quitting.........")
-        running = False
+        user_name = difficulty_selection()  # Start the game with difficulty selection
+    elif option_choice == "2":
+        view_history()  # Display the game history
+    elif option_choice == "3":
+        mysterious_reward(user_name)  # Redeem a mysterious reward if applicable
+    elif option_choice == "4":
+        display_rules()  # Display the rules of the game
+    elif option_choice == "5":
+        print("Game is quitting.........")  # Print a quitting message
+        running = False  # End the main game loop
