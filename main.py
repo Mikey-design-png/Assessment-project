@@ -129,13 +129,13 @@ def continue_function(question_amount: int) -> bool:
 
         Arguments:
         ---------
-        question_amount(int): The number of questions done
+        question_amount(int):  The number of questions the user has answered so far
 
         Returns:
             bool: True if the user chooses to continue(y), False otherwise(n).
         """
     # prompts the user to decide whether continuing the game.Informing the number of questions done.
-    continue_game = (
+    continue_game: str = (
         input(
             f"\nYou have answered {question_amount} questions, do you still wanna continue(Y/N):"
         )
@@ -150,24 +150,50 @@ def continue_function(question_amount: int) -> bool:
         # Raise an error message to inform the users about the valid range
         print("\nInvalid input. Only Y and N")
         # Prompt the user again for a valid input.Informing the number of questions done.
-        continue_game = (
+        continue_game: str = (
             input(
                 f"\nYou have answered {question_amount} questions, do you still wanna continue(Y/N):"
             )
             .strip()  # Remove the whitespace from the input
             .upper() # Convert the input to uppercase for the uniform type
         )
+
+    # Return True if the user wants to continue (input 'Y'), False(input "N")
+    # By using variable == to determine the bool type
     return continue_game == "Y"
 
 
-def mysterious_reward(player_name: str):
+def mysterious_reward(player_name: str) -> None:
+    """
+        Displays a mysterious reward based on the player's score.
+
+        This function checks the player's score to determine if they are eligible for a reward.
+        If the player's score is 20 or more, it displays a congratulatory message and a visual picture
+        of a thumb-up by printing. If the player is at the "Hard level", it calls a recognition function.
+        If the player has not achieved the required score, it informs them of their ineligibility.
+        If not user_name is provided, they will be informed they haven't done any games yet
+
+        Arguments:
+        ----------
+        player_name (str): The name of the player whose score is gonna be checked.
+        """
+    # Display the mysterious reward functions
     print("\nA mysterious reward:")
+    # Check if the play-name is provided if they have done any games
+    # if not the player_name will be None, which means False in if conditions
+    # No None is No False means True
+    # As it is True, raising a message to inform them
     if not player_name:
         print("You have not done any games yet")
+
+    # If they have done games, player_name will be provided
     else:
-        user_score = user_information[player_name]["score"]
+        # By using player_name and score as keys to take out the user_score
+        user_score: int = user_information[player_name]["score"]
+        # Check if the score is enough for redeeming the reward(20 at least)
         if user_score >= 20:
-            thumb = [
+            # Define the thumb with some lines
+            thumb: list = [
                 "          __  ",
                 "         /  | ",
                 "        /   | ",
@@ -179,36 +205,86 @@ def mysterious_reward(player_name: str):
                 "|           | ",
                 "|___________| ",
             ]
+
+            # Congratulate the player and print the thumb-up
             print(f"Congratulations! {player_name}")
             for line in thumb:
                 print(line)
+            # Check the player's level and provide additional recognition if it meets
+            # If the level is hard and earned 20 score, they can redeem a recognition.
             level = user_information[player_name]["level"]
             if level == "Hard level":
                 recognition_message(player_name)
+        # Check the score is less than 20
         else:
+            # Inform the player they are not eligible for the reward
             print("Sorry!You don't have enough score for this reward!")
 
 
 def view_history():
+    """
+        Displays the history of player scores and levels.
+
+        This function prints a list of all players along with their final scores and levels.
+        If no player information is available, it informs the user that no records exist.
+
+        """
     print("\nView history:")
+    # if no player information is available,it informs the user that no records exist.
     if not user_information:
         print("No records(You have not done any games)")
     else:
+        # Enumerate through the user information and display each player's details
+        # `enumerate` starts counting from 1, providing the index (place) and the player's name
         for place, name in enumerate(user_information.keys(), start=1):
-            final_score = user_information[name]["score"]
-            level = user_information[name]["level"]
+
+            # Retrieve the final score and level by these keys.
+            final_score: int = user_information[name]["score"]
+            level: str = user_information[name]["level"]
+            # Display the user information with name, score, level
             print(f"{place})---({name})---final score:{final_score}----Level:{level}")
 
 
 def wager_system(score: int, level: str, player_life: int) -> int:
+    """
+        The wagering system where the player can choose to wager points.
+
+        This function prompts the player to decide if they want to wager their points.
+        If the player chooses to wager, they are asked to enter the amount they wish to wager,
+        which must be within a specified range and not exceed their current score.
+
+        The function validates the input to ensure it is within the valid range and handles any
+        invalid inputs by prompting the user again. If the player answers the wager question correctly,
+        their score is increased by the wagered amount. If they answer incorrectly, their score is decreased
+        by the wagered amount. The function returns the updated score.
+
+        Arguments:
+        ---------
+        score (int): The player's current score.
+        level (str): The difficulty level chosen
+        player_life (int): The number of lives the player has.
+
+        Returns:
+        -------
+        score(int): The updated score after wagering.
+        """
     while True:
+        # Inform the player of the consequences of a wrong wager
         print(
-            "If you answer the wager question incorrect, you will lose your wager points"
+            "\nIf you answer the wager question incorrect, you will lose your wager points"
         )
-        wager_option = input("\nDo you wanna wager your socre? (Y/N)").upper().strip()
+        # Prompt the user to choose whether to wager.
+        wager_option: str = input("Do you wanna wager your socre? (Y/N)").upper().strip()
+
+        # Check if the wager_option is in the valid range
+        # If not the loop will keep asking the wager_option
+        # Until the wager option is in the valid range.
         while wager_option not in VALID_WAGER_OPTIONS:
+            # Raise an error message to infrom the users about the valid range
             print("\nInvalid input! The valid input is Y or N")
+            # Prompt the users to enter an valid value
             wager_option = input("Do you wanna wager you score?(Y/N)").upper().strip()
+        # 
         if wager_option == "Y":
             while True:
                 try:
